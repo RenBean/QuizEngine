@@ -7,6 +7,8 @@ import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.view.RedirectView;
+
+import enums.Category;
 import quizEngine.entities.QuizQuestion;
 import quizEngine.entities.QuizQuestionDAO;
 
@@ -30,7 +32,7 @@ public class QuizController {
 
     @RequestMapping(value="/")
     public String dashboard(ModelMap model) {
-        model.addAttribute("categories", QuizQuestion.Category.values());
+        model.addAttribute("categories", Category.values());
         model.addAttribute("QuizTypes", QuizQuestion.QuizType.values());
         model.addAttribute("questionTypes", QuizQuestion.QuestionType.values());
         model.addAttribute("difficulties", QuizQuestion.Difficulty.values());
@@ -50,32 +52,32 @@ public class QuizController {
         int numberOfQuestions = 0;
 
         // category!=ALL && questionType==ALL && difficulty==ALL
-        if(!category.equals(QuizQuestion.Category.ALL) && questionType.equals(QuizQuestion.QuestionType.ALL) && difficulty.equals(QuizQuestion.Difficulty.ALL)) {
-            quizQuestions = quizQuestionDAO.findByCategory(QuizQuestion.Category.valueOf(category));
+        if(!category.equals(Category.ALL) && questionType.equals(QuizQuestion.QuestionType.ALL) && difficulty.equals(QuizQuestion.Difficulty.ALL)) {
+            quizQuestions = quizQuestionDAO.findByCategory(Category.valueOf(category));
         }
         // category!=ALL && questionType!=ALL && difficulty==ALL
-        else if(!category.equals(QuizQuestion.Category.ALL) && !questionType.equals(QuizQuestion.QuestionType.ALL) && difficulty.equals(QuizQuestion.Difficulty.ALL)) {
-            quizQuestions = quizQuestionDAO.findByCategoryAndQuestionType(QuizQuestion.Category.valueOf(category), QuizQuestion.QuestionType.valueOf(questionType));
+        else if(!category.equals(Category.ALL) && !questionType.equals(QuizQuestion.QuestionType.ALL) && difficulty.equals(QuizQuestion.Difficulty.ALL)) {
+            quizQuestions = quizQuestionDAO.findByCategoryAndQuestionType(Category.valueOf(category), QuizQuestion.QuestionType.valueOf(questionType));
         }
         // category!=ALL && questionType!=ALL && difficulty!=ALL
-        else if(!category.equals(QuizQuestion.Category.ALL) && !questionType.equals(QuizQuestion.QuestionType.ALL) && !difficulty.equals(QuizQuestion.Difficulty.ALL)) {
-            quizQuestions = quizQuestionDAO.findByCategoryAndQuestionTypeAndDifficulty(QuizQuestion.Category.valueOf(category), QuizQuestion.QuestionType.valueOf(questionType), QuizQuestion.Difficulty.valueOf(difficulty));
+        else if(!category.equals(Category.ALL) && !questionType.equals(QuizQuestion.QuestionType.ALL) && !difficulty.equals(QuizQuestion.Difficulty.ALL)) {
+            quizQuestions = quizQuestionDAO.findByCategoryAndQuestionTypeAndDifficulty(Category.valueOf(category), QuizQuestion.QuestionType.valueOf(questionType), QuizQuestion.Difficulty.valueOf(difficulty));
         }
         // category==ALL && questionType!=ALL && difficulty==ALL
-        else if(category.equals(QuizQuestion.Category.ALL) && !questionType.equals(QuizQuestion.QuestionType.ALL) && difficulty.equals(QuizQuestion.Difficulty.ALL)) {
+        else if(category.equals(Category.ALL) && !questionType.equals(QuizQuestion.QuestionType.ALL) && difficulty.equals(QuizQuestion.Difficulty.ALL)) {
             quizQuestions = quizQuestionDAO.findByQuestionType(QuizQuestion.QuestionType.valueOf(questionType));
         }
         // category==ALL && questionType!=ALL && difficulty!=ALL
-        else if(category.equals(QuizQuestion.Category.ALL) && !questionType.equals(QuizQuestion.QuestionType.ALL) && !difficulty.equals(QuizQuestion.Difficulty.ALL)) {
+        else if(category.equals(Category.ALL) && !questionType.equals(QuizQuestion.QuestionType.ALL) && !difficulty.equals(QuizQuestion.Difficulty.ALL)) {
             quizQuestions = quizQuestionDAO.findByQuestionTypeAndDifficulty(QuizQuestion.QuestionType.valueOf(questionType), QuizQuestion.Difficulty.valueOf(difficulty));
         }
         // category==ALL && questionType==ALL && difficulty!=ALL
-        else if(category.equals(QuizQuestion.Category.ALL) && questionType.equals(QuizQuestion.QuestionType.ALL) && !difficulty.equals(QuizQuestion.Difficulty.ALL)) {
+        else if(category.equals(Category.ALL) && questionType.equals(QuizQuestion.QuestionType.ALL) && !difficulty.equals(QuizQuestion.Difficulty.ALL)) {
             quizQuestions = quizQuestionDAO.findByDifficulty(QuizQuestion.Difficulty.valueOf(difficulty));
         }
         // category!=ALL && questionType==ALL && difficulty!=ALL
-        else if(!category.equals(QuizQuestion.Category.ALL) && questionType.equals(QuizQuestion.QuestionType.ALL) && !difficulty.equals(QuizQuestion.Difficulty.ALL)) {
-            quizQuestions = quizQuestionDAO.findByCategoryAndDifficulty(QuizQuestion.Category.valueOf(category), QuizQuestion.Difficulty.valueOf(difficulty));
+        else if(!category.equals(Category.ALL) && questionType.equals(QuizQuestion.QuestionType.ALL) && !difficulty.equals(QuizQuestion.Difficulty.ALL)) {
+            quizQuestions = quizQuestionDAO.findByCategoryAndDifficulty(Category.valueOf(category), QuizQuestion.Difficulty.valueOf(difficulty));
         }
         if(quizQuestions != null) {
             numberOfQuestions = countIterable(quizQuestions);
