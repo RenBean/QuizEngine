@@ -13,7 +13,7 @@
         Email: <input type="text" name="name" /><br><br>
         Quiz Category: <select name="category">
             <c:forEach var="category" items="${categories}">
-                <option value="<c:out value="${category}"/>"><c:out value="${category}"/></option>
+                <option value="<c:out value="${category}"/>"><c:out value="${category.label}"/></option>
             </c:forEach>
         </select><br><br>
         Quiz Type: <select name="quizType">
