@@ -2,6 +2,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
+    <link type="text/css" rel="stylesheet" href="/css/style.css">
     <title>QUIZ QUESTION</title>
 </head>
 <body>
@@ -9,6 +10,7 @@
 
 QUESTION: <c:out value="${quizQuestion.question}" />
 <br><br><br>
+<%--<output type="text" name="Iterable" value="?">:<c:out value="${quizQuestion.Iterable}" /></output>--%>
 <form name="questionForm" method="POST" action="/quiz/questionAnswer">
 <c:if test="${quizQuestion.questionType == 'MULTIPLE_CHOICE'}">
     <input type="radio" name="multiAnswer" value="yes"> :<c:out value="${quizQuestion.correctMultipleChoiceAnswer}" /><br>

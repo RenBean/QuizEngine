@@ -105,6 +105,7 @@ public class QuizController {
         int numberOfQuestions = quizQuestionsHashMap.size();
         if(usedQuestions.size() >= numberOfQuestions) {
             return "quiz/quizResults";
+            //TODO ++
         }
         boolean isNewQuestion = false;
         int questionNumber = -1;
@@ -124,12 +125,13 @@ public class QuizController {
 
     @RequestMapping(value="questionAnswer")
     public String questionAnswer(String multiAnswer, String trueFalseAnswer, ModelMap model, HttpServletRequest request) {
+
         HashMap<Integer,QuizQuestion> quizQuestionsHashMap = (HashMap<Integer,QuizQuestion>)request.getSession().getAttribute("quizQuestionsHashMap");
         int questionNumber = (Integer) request.getSession().getAttribute("questionNumber");
         QuizQuestion quizQuestion = quizQuestionsHashMap.get(questionNumber);
         model.addAttribute("quizQuestion",quizQuestion);
-        model.remove("correct");
-        model.remove("incorrect");
+//        model.remove("correct");
+//        model.remove("incorrect");
         if(quizQuestion.getQuestionType().equals(QuizQuestion.QuestionType.MULTIPLE_CHOICE)) {
             if (multiAnswer != null && multiAnswer.equalsIgnoreCase("yes")) {
                 model.addAttribute("correct","GREAT JOB!");
@@ -139,6 +141,7 @@ public class QuizController {
         } else if (quizQuestion.getQuestionType().equals(QuizQuestion.QuestionType.TRUE_FALSE)) {
             if(trueFalseAnswer != null && quizQuestion.isTrueOrFalse() == Boolean.valueOf(trueFalseAnswer)) {
                 model.addAttribute("correct","GREAT JOB!");
+
             } else {
                 model.addAttribute("incorrect","SORRY Wrong Answer");
             }
