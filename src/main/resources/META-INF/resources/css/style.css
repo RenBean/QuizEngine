@@ -1,3 +1,5 @@
-*{
-    background-color: lightsteelblue;
+body{
+    background-color: aliceblue;
+    margin:auto; box-shadow: black;
+    text-align: center;
 }
