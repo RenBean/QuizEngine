@@ -26,7 +26,7 @@
 </c:if>
 <hr/>
 <c:if test="${not empty tracker}">
-        <c:out value="${tracker.correct}" />/<c:out value="${tracker.incorrect}" />
+        You have <c:out value="${tracker.correct}" /> correct and <c:out value="${tracker.incorrect}" /> incorrect.
 </c:if>
 <br><br>
 
