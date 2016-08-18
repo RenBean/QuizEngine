@@ -24,6 +24,10 @@
         <c:out value="${incorrect}" />
     </div>
 </c:if>
+<hr/>
+<c:if test="${not empty tracker}">
+        <c:out value="${tracker.correct}" />/<c:out value="${tracker.incorrect}" />
+</c:if>
 <br><br>
 
 QUESTION: <c:out value="${quizQuestion.question}" /><br>
