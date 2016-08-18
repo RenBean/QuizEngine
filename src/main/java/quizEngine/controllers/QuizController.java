@@ -8,9 +8,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.view.RedirectView;
 
-import enums.Category;
+import quizEngine.enums.Category;
 import quizEngine.entities.QuizQuestion;
 import quizEngine.entities.QuizQuestionDAO;
+import quizEngine.entities.Tracker;
+import quizEngine.entities.TrackerDAO;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -22,12 +24,15 @@ import java.util.Random;
 @RequestMapping(value="/quiz/")
 public class QuizController {
 
+    //add TrackerDAO
     private final QuizQuestionDAO quizQuestionDAO;
+    private final TrackerDAO trackerDAO;
 
-    @Autowired
-    public QuizController(QuizQuestionDAO quizQuestionDAO) {
+    @Autowired //this is how Sring calls its beans so add a Tracker for it to call
+    public QuizController(QuizQuestionDAO quizQuestionDAO,TrackerDAO trackerDAO) {
         Assert.notNull(quizQuestionDAO, "QuizQuestionDAO must not be null!");
         this.quizQuestionDAO = quizQuestionDAO;
+        this.trackerDAO = trackerDAO;
     }
 
     @RequestMapping(value="/")
@@ -36,6 +41,9 @@ public class QuizController {
         model.addAttribute("QuizTypes", QuizQuestion.QuizType.values());
         model.addAttribute("questionTypes", QuizQuestion.QuestionType.values());
         model.addAttribute("difficulties", QuizQuestion.Difficulty.values());
+        model.addAttribute("tracker", new Tracker());
+        //this is your mapper the add attribute allows these definitions to be called and linked
+        //paired keys and values
         return "quiz/index";
     }
 
@@ -47,6 +55,14 @@ public class QuizController {
         request.getSession().setAttribute("quizType",quizType);
         request.getSession().setAttribute("questionType",questionType);
         request.getSession().setAttribute("difficulty",difficulty);
+        //found my name and email call above
+        //now lets add a Tracker tag set below
+        Tracker tracker = new Tracker();
+        tracker.setEmail(email);
+        tracker.setName(name);
+        trackerDAO.save(tracker);
+        request.getSession().setAttribute("tracker", tracker);
+        //don't forget to save it and log it as a session
 
         Iterable<QuizQuestion> quizQuestions = null;
         int numberOfQuestions = 0;
@@ -107,7 +123,7 @@ public class QuizController {
         int numberOfQuestions = quizQuestionsHashMap.size();
         if(usedQuestions.size() >= numberOfQuestions) {
             return "quiz/quizResults";
-            //TODO ++
+            //TODO
         }
         boolean isNewQuestion = false;
         int questionNumber = -1;
@@ -127,27 +143,35 @@ public class QuizController {
 
     @RequestMapping(value="questionAnswer")
     public String questionAnswer(String multiAnswer, String trueFalseAnswer, ModelMap model, HttpServletRequest request) {
-
+        String email = (String)request.getSession().getAttribute("email");
+        Tracker tracker = trackerDAO.findByEmail(email);
         HashMap<Integer,QuizQuestion> quizQuestionsHashMap = (HashMap<Integer,QuizQuestion>)request.getSession().getAttribute("quizQuestionsHashMap");
         int questionNumber = (Integer) request.getSession().getAttribute("questionNumber");
         QuizQuestion quizQuestion = quizQuestionsHashMap.get(questionNumber);
         model.addAttribute("quizQuestion",quizQuestion);
-//        model.remove("correct");
-//        model.remove("incorrect");
+        model.remove("correct");
+        model.remove("incorrect");
         if(quizQuestion.getQuestionType().equals(QuizQuestion.QuestionType.MULTIPLE_CHOICE)) {
             if (multiAnswer != null && multiAnswer.equalsIgnoreCase("yes")) {
                 model.addAttribute("correct","GREAT JOB!");
+                tracker.setCorrect(tracker.getCorrect()+1);
             } else {
                 model.addAttribute("incorrect","SORRY Wrong Answer");
+                tracker.setIncorrect(tracker.getIncorrect() + 1);
             }
         } else if (quizQuestion.getQuestionType().equals(QuizQuestion.QuestionType.TRUE_FALSE)) {
             if(trueFalseAnswer != null && quizQuestion.isTrueOrFalse() == Boolean.valueOf(trueFalseAnswer)) {
                 model.addAttribute("correct","GREAT JOB!");
-
+                tracker.setCorrect(tracker.getCorrect()+1);
             } else {
                 model.addAttribute("incorrect","SORRY Wrong Answer");
+                tracker.setIncorrect(tracker.getIncorrect() + 1);
             }
+            //lets add our counters above
         }
+        //save and log the session
+        trackerDAO.save(tracker);
+        request.getSession().setAttribute("tracker", tracker);
         return "quiz/answer";
     }
 

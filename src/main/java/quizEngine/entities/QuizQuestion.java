@@ -3,14 +3,14 @@ package quizEngine.entities;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
-import enums.Category;
+import quizEngine.enums.Category;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 @Entity
 @Table(name = "quiz_question")
 public class QuizQuestion {
+    //a lone of code breaks out of its class,... where did it go? 
 //    public static enum Category { ALL, CORE_JAVA, JAVA_IO, SQL, JAVA_DATABASE, SERVLET, JSP, HTML, CSS, SPRING, HIBERNATE, ANDROID };
     public static enum QuestionType { ALL, MULTIPLE_CHOICE, TRUE_FALSE, CODE };
     public static enum Difficulty { ALL, EASY, AVERAGE, DIFFICULT, CRAZY_HARD };

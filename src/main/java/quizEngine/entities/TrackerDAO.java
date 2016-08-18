@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * Created by Ari on 8/17/16.
  */
+//created TrackerDAO to keep track of user email crud
 
 @Transactional
 public interface TrackerDAO extends CrudRepository<Tracker, Long> {

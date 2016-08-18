@@ -3,7 +3,7 @@ package quizEngine.entities;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.transaction.annotation.Transactional;
 
-import enums.Category;
+import quizEngine.enums.Category;
 
 import java.util.List;
 

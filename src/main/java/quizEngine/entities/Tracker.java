@@ -7,6 +7,8 @@ import javax.validation.constraints.Null;
 /**
  * Created by Ari on 8/17/16.
  */
+// created Tracker Entity to be called from QuizController
+
 @Entity
 @Table(name = "track_users")
 public class Tracker {
