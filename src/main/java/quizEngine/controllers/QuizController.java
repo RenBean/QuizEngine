@@ -28,15 +28,21 @@ public class QuizController {
     private final QuizQuestionDAO quizQuestionDAO;
     private final TrackerDAO trackerDAO;
 
-    @Autowired //this is how Sring calls its beans so add a Tracker for it to call
+    @Autowired //this is how String calls its beans so add a Tracker for it to call
     public QuizController(QuizQuestionDAO quizQuestionDAO,TrackerDAO trackerDAO) {
         Assert.notNull(quizQuestionDAO, "QuizQuestionDAO must not be null!");
+        Assert.notNull(trackerDAO, "TrackerDAO must not be null!");
         this.quizQuestionDAO = quizQuestionDAO;
         this.trackerDAO = trackerDAO;
+    }
+    @RequestMapping(value="quizResults")
+    public String quizResults (ModelMap model) {
+        return "quiz/quizResults";
     }
 
     @RequestMapping(value="/")
     public String dashboard(ModelMap model) {
+        //TODO
         model.addAttribute("categories", Category.values());
         model.addAttribute("QuizTypes", QuizQuestion.QuizType.values());
         model.addAttribute("questionTypes", QuizQuestion.QuestionType.values());
@@ -60,8 +66,7 @@ public class QuizController {
         Tracker tracker = new Tracker();
         tracker.setEmail(email);
         tracker.setName(name);
-        trackerDAO.save(tracker);
-        request.getSession().setAttribute("tracker", tracker);
+
         //don't forget to save it and log it as a session
 
         Iterable<QuizQuestion> quizQuestions = null;
@@ -109,6 +114,10 @@ public class QuizController {
             quizQuestionsHashMap.put(i,quizQuestion);
             i++;
         }
+        tracker.setNumberOfQuestions(countIterable(quizQuestions));
+        trackerDAO.save(tracker);
+        request.getSession().setAttribute("tracker", tracker);
+        //add the tracker number of questions
         request.getSession().setAttribute("quizQuestionsHashMap",quizQuestionsHashMap);
         ArrayList<Integer> usedQuestions = new ArrayList<>();
         request.getSession().setAttribute("usedQuestions",usedQuestions);
@@ -145,19 +154,21 @@ public class QuizController {
     public String questionAnswer(String multiAnswer, String trueFalseAnswer, ModelMap model, HttpServletRequest request) {
         String email = (String)request.getSession().getAttribute("email");
         Tracker tracker = trackerDAO.findByEmail(email);
+        //insert String email and tracker object and query by email
         HashMap<Integer,QuizQuestion> quizQuestionsHashMap = (HashMap<Integer,QuizQuestion>)request.getSession().getAttribute("quizQuestionsHashMap");
         int questionNumber = (Integer) request.getSession().getAttribute("questionNumber");
         QuizQuestion quizQuestion = quizQuestionsHashMap.get(questionNumber);
         model.addAttribute("quizQuestion",quizQuestion);
         model.remove("correct");
         model.remove("incorrect");
+        //clearing the pipe /removing the cache for key value pairs
         if(quizQuestion.getQuestionType().equals(QuizQuestion.QuestionType.MULTIPLE_CHOICE)) {
             if (multiAnswer != null && multiAnswer.equalsIgnoreCase("yes")) {
                 model.addAttribute("correct","GREAT JOB!");
                 tracker.setCorrect(tracker.getCorrect()+1);
             } else {
                 model.addAttribute("incorrect","SORRY Wrong Answer");
-                tracker.setIncorrect(tracker.getIncorrect() + 1);
+                tracker.setIncorrect(tracker.getIncorrect()+1);
             }
         } else if (quizQuestion.getQuestionType().equals(QuizQuestion.QuestionType.TRUE_FALSE)) {
             if(trueFalseAnswer != null && quizQuestion.isTrueOrFalse() == Boolean.valueOf(trueFalseAnswer)) {
@@ -165,7 +176,7 @@ public class QuizController {
                 tracker.setCorrect(tracker.getCorrect()+1);
             } else {
                 model.addAttribute("incorrect","SORRY Wrong Answer");
-                tracker.setIncorrect(tracker.getIncorrect() + 1);
+                tracker.setIncorrect(tracker.getIncorrect()+1);
             }
             //lets add our counters above
         }

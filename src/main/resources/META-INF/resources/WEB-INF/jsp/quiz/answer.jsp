@@ -14,21 +14,22 @@
 <body>
 <h1>QUIZ ANSWER</h1>
 
-<c:if test="${not empty correct}">
+<c:if test="${not empty tracker.correct}">
     <div style="color:green;font-weight: bold;">
-        <c:out value="${correct}" />
+        <c:out value="${tracker.correct}" />
     </div>
 </c:if>
-<c:if test="${not empty incorrect}">
+<c:if test="${not empty tracker.incorrect}">
     <div style="color:red;font-weight: bold;">
-        <c:out value="${incorrect}" />
+        <c:out value="${tracker.incorrect}" />
     </div>
+</c:if>
 <hr/>
 
-
-<c:if test="${not empty tracker}">
-    You have <c:out value="${tracker.correct}" /> correct <br><c:out value="${tracker.incorrect}" /> incorrect.
-</c:if>
+<%--add a call to tracker then print out key.value  +string break + next key.value --%>
+<%--<c:if test="${not empty tracker}">--%>
+    <%--You have <c:out value="${tracker.correct}" /> correct <br><c:out value="${tracker.incorrect}" /> incorrect.--%>
+<%--</c:if>--%>
 
 <br><br>
 
@@ -68,5 +69,8 @@ ANSWER:
     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
     <input type="submit" value="Next Question" />
 </form>
+                    <a href="/">home</a><br>
+                    <a href="quizResults">Exit and go to results</a>
+
 </body>
 </html>

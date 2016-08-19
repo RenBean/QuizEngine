@@ -15,9 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 public class DefaultController {
 
     @RequestMapping(value="/")
-    public View jspIndex() {
-        return new RedirectView("/quiz/");
-    }
+    public View jspIndex() {return new RedirectView("/quiz/");}
 
     @RequestMapping(value="/login")
     public String login() {

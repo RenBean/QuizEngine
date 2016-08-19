@@ -10,7 +10,7 @@ import javax.validation.constraints.Null;
 // created Tracker Entity to be called from QuizController
 
 @Entity
-@Table(name = "track_users")
+@Table(name = "track")
 public class Tracker {
     private int correct;
     private int incorrect;
@@ -25,6 +25,19 @@ public class Tracker {
 
     @NotNull
     private String name;
+
+    @NotNull
+    private int numberOfQuestions=0;
+
+
+
+    public int getNumberOfQuestions() {
+        return numberOfQuestions;
+    }
+
+    public void setNumberOfQuestions(int numberOfQuestions) {
+        this.numberOfQuestions = numberOfQuestions;
+    }
 
     public int getCorrect() {
         return correct;
