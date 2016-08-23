@@ -1,5 +1,18 @@
 body{
     background-color: aliceblue;
     margin:auto; box-shadow: black;
-    text-align: center;
+    text-align: center;}
+a{
+    font-size: 10px;
+    color:dimgrey;
+
 }
+div{
+    background-size: contain ;
+    background-color:#282a36;
+    max-height: 30em;
+    padding-bottom: 3px;
+    padding-top: 3px;
+    font-weight:bold; font-style:italic; font-color:#00ff33;
+}
+

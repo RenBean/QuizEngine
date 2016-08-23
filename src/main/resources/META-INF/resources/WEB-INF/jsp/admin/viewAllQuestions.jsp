@@ -50,9 +50,17 @@
                     </c:forEach>
                 </c:if>
             </td>
+            <td><a href="/admin/deleteQuestion?id=${quizQuestion.id}">DELETE<c:out value="${quizQuestion.id}" /></a></td>
         </tr>
     </c:forEach>
 </table>
+||
+<a href="/restData/getAllQuestions">Bulk Download Questions</a>
+||
+<a href="/admin/uploadQuestions">Bulk Upload Questions</a>
+||
+<a href="admin/deleteAllQuestions">Bulk Delete All Questions</a>
+
 <br><br>
 <a href="/">HOME</a>
 &nbsp;&nbsp;&nbsp;&nbsp;

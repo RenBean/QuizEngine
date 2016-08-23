@@ -3,49 +3,45 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <link type="text/css" rel="stylesheet" href="/css/style.css">
     <title>QUIZ ANSWER</title>
-    <c:if test="${quizQuestion.questionType == 'CODE'}">
-        <link rel="stylesheet" href="https://highlightjs.org/static/demo/styles/dracula.css">
-        <script src="https://highlightjs.org/static/highlight.pack.js"></script>
-        <script>hljs.initHighlightingOnLoad();</script>
-    </c:if>
+    <link type="text/css" rel="stylesheet" href="/css/style.css">
+    <%--<c:if test="${quizQuestion.questionType == 'CODE'}">--%>
+        <%--<link rel="stylesheet" href="https://highlightjs.org/static/demo/styles/dracula.css">--%>
+        <%--<script src="https://highlightjs.org/static/highlight.pack.js"></script>--%>
+        <%--<script>hljs.initHighlightingOnLoad();</script>--%>
+    <%--</c:if>--%>
 </head>
 <body>
+<br>
 <h1>QUIZ ANSWER</h1>
-
-<c:if test="${not empty tracker.correct}">
-    <div style="color:green;font-weight: bold;">
-        <c:out value="${tracker.correct}" />
+<c:if test="${not empty correct}">
+    <div style="color:#00ff33;font-weight: bold;">
+        <c:out value="${correct}" />
     </div>
 </c:if>
-<c:if test="${not empty tracker.incorrect}">
+<c:if test="${not empty incorrect}">
     <div style="color:red;font-weight: bold;">
-        <c:out value="${tracker.incorrect}" />
+        <c:out value="${incorrect}" />
     </div>
 </c:if>
-<hr/>
-
-<%--add a call to tracker then print out key.value  +string break + next key.value --%>
-<%--<c:if test="${not empty tracker}">--%>
-    <%--You have <c:out value="${tracker.correct}" /> correct <br><c:out value="${tracker.incorrect}" /> incorrect.--%>
-<%--</c:if>--%>
-
-<br><br>
-
+<br>
+<c:if test="${not empty tracker}">
+    You have <c:out value="${tracker.correct}" /> correct <br><c:out value="${tracker.incorrect}" /> incorrect.
+</c:if>
+<br>
 QUESTION: <c:out value="${quizQuestion.question}" /><br>
 ANSWER:
-    <c:if test="${quizQuestion.questionType == 'MULTIPLE_CHOICE'}">
-        <c:out value="${quizQuestion.correctMultipleChoiceAnswer}" />
-    </c:if>
-    <c:if test="${quizQuestion.questionType == 'TRUE_FALSE'}">
-        <c:out value="${quizQuestion.trueOrFalse}" />
-    </c:if>
-    <c:if test="${quizQuestion.questionType == 'CODE'}">
-        <br>
-        <c:choose>
-            <c:when test="${quizQuestion.category == 'SQL'}">
-                <pre><code class="sql">
+<c:if test="${quizQuestion.questionType == 'MULTIPLE_CHOICE'}">
+    <c:out value="${quizQuestion.correctMultipleChoiceAnswer}" />
+</c:if>
+<c:if test="${quizQuestion.questionType == 'TRUE_FALSE'}">
+    <c:out value="${quizQuestion.trueOrFalse}" />
+</c:if>
+<c:if test="${quizQuestion.questionType == 'CODE'}">
+<br>
+<c:choose>
+<c:when test="${quizQuestion.category == 'SQL'}">
+<pre><code class="sql">
             </c:when>
             <c:when test="${quizQuestion.category == 'HTML'}">
                 <pre><code class="html">
@@ -57,20 +53,20 @@ ANSWER:
                 <pre><code class="java">
             </c:otherwise>
         </c:choose>
+                <div style="color:#00ff33;font-weight: bold;">
         <c:forEach var="codeLine" items="${quizQuestion.codeLines}">
             <c:if test="${not empty codeLine && fn:length(codeLine)>0}">
                 <c:out value="${codeLine}"/>
             </c:if>
         </c:forEach>
+                </div>
         </code></pre>
     </c:if>
-<br><br>
+<br>
 <form action="/quiz/nextQuestion" method="POST">
     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-    <input type="submit" value="Next Question" />
-</form>
-                    <a href="/">home</a><br>
+    <br><input type="submit" value="Next Question" /><br>  <a href="/">Home</a><br>
                     <a href="quizResults">Exit and go to results</a>
-
+</form>
 </body>
 </html>

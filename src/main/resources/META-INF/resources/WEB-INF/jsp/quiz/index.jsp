@@ -3,9 +3,13 @@
 <html>
 <head>
     <link type="text/css" rel="stylesheet" href="/css/style.css">
+    <%--<link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.no-icons.min.css" rel="stylesheet">--%>
+    <%--<link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">--%>
+    <%--<link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">--%>
     <title>QUIZ ENGINE</title>
 </head>
 <body>
+<br>
     <h1>QUIZ ENGINE</h1>
 
     <form name="quizStartForm" method="POST" action="/quiz/startQuiz">
@@ -13,19 +17,19 @@
         Email: <input type="text" name="email" /><br><br>
         Quiz Category: <select name="category">
             <c:forEach var="category" items="${categories}">
-                <option value="<c:out value="${category}"/>"><c:out value="${category.label}"/></option>
+                <option value="<c:out value="${category}"/>"><c:out value="${category}"/></option>
             </c:forEach>
         </select><br><br>
         Quiz Type: <select name="quizType">
-            <c:forEach var="QuizType" items="${QuizTypes}">
-                <option value="<c:out value="${QuizType}"/>"><c:out value="${QuizType}"/></option>
+            <c:forEach var="quizType" items="${quizTypes}">
+                <option value="<c:out value="${quizType}"/>"><c:out value="${quizType}"/></option>
             </c:forEach>
         </select><br><br>
-        Question Type: <select name="questionType">
-            <c:forEach var="questionType" items="${questionTypes}">
-                <option value="<c:out value="${questionType}"/>"><c:out value="${questionType}"/></option>
-            </c:forEach>
-        </select><br><br>
+        <%--Question Type: <select name="questionType">--%>
+            <%--<c:forEach var="questionType" items="${questionTypes}">--%>
+                <%--<option value="<c:out value="${questionType}"/>"><c:out value="${questionType}"/></option>--%>
+            <%--</c:forEach>--%>
+        <%--</select><br><br>--%>
         Question Difficulty: <select name="difficulty">
             <c:forEach var="difficulty" items="${difficulties}">
                 <option value="<c:out value="${difficulty}"/>"><c:out value="${difficulty}"/></option>
@@ -34,6 +38,7 @@
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
         <input type="submit" value="Let the Quiz Begin">
     </form>
+    <br><br><br><br>
     <br><br><br><br>
     <a href="/admin/">admin</a>
 </body>

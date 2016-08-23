@@ -16,7 +16,7 @@ public interface TrackerDAO extends CrudRepository<Tracker, Long> {
          * Note that this method is not implemented and its working code will be
          * automatically generated from its signature by Spring Data JPA.
          */
-        public Tracker findByEmail(String email);
+        Tracker findByEmail(String email);
 
 
 

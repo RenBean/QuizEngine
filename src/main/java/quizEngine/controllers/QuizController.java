@@ -8,17 +8,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.view.RedirectView;
 
-import quizEngine.enums.Category;
+
 import quizEngine.entities.QuizQuestion;
 import quizEngine.entities.QuizQuestionDAO;
 import quizEngine.entities.Tracker;
 import quizEngine.entities.TrackerDAO;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Random;
+import java.util.*;
 
 @Controller
 @RequestMapping(value="/quiz/")
@@ -35,6 +32,7 @@ public class QuizController {
         this.quizQuestionDAO = quizQuestionDAO;
         this.trackerDAO = trackerDAO;
     }
+    //added mapping for quizResults direct link
     @RequestMapping(value="quizResults")
     public String quizResults (ModelMap model) {
         return "quiz/quizResults";
@@ -42,9 +40,8 @@ public class QuizController {
 
     @RequestMapping(value="/")
     public String dashboard(ModelMap model) {
-        //TODO
-        model.addAttribute("categories", Category.values());
-        model.addAttribute("QuizTypes", QuizQuestion.QuizType.values());
+        model.addAttribute("categories", QuizQuestion.Category.values());
+        model.addAttribute("quizTypes", QuizQuestion.QuizType.values());
         model.addAttribute("questionTypes", QuizQuestion.QuestionType.values());
         model.addAttribute("difficulties", QuizQuestion.Difficulty.values());
         model.addAttribute("tracker", new Tracker());
@@ -73,32 +70,32 @@ public class QuizController {
         int numberOfQuestions = 0;
 
         // category!=ALL && questionType==ALL && difficulty==ALL
-        if(!category.equals(Category.ALL) && questionType.equals(QuizQuestion.QuestionType.ALL) && difficulty.equals(QuizQuestion.Difficulty.ALL)) {
-            quizQuestions = quizQuestionDAO.findByCategory(Category.valueOf(category));
+        if(!category.equals(QuizQuestion.Category.ALL) && questionType.equals(QuizQuestion.QuestionType.ALL) && difficulty.equals(QuizQuestion.Difficulty.ALL)) {
+            quizQuestions = quizQuestionDAO.findByCategory(QuizQuestion.Category.valueOf(category));
         }
         // category!=ALL && questionType!=ALL && difficulty==ALL
-        else if(!category.equals(Category.ALL) && !questionType.equals(QuizQuestion.QuestionType.ALL) && difficulty.equals(QuizQuestion.Difficulty.ALL)) {
-            quizQuestions = quizQuestionDAO.findByCategoryAndQuestionType(Category.valueOf(category), QuizQuestion.QuestionType.valueOf(questionType));
+        else if(!category.equals(QuizQuestion.Category.ALL) && !questionType.equals(QuizQuestion.QuestionType.ALL) && difficulty.equals(QuizQuestion.Difficulty.ALL)) {
+            quizQuestions = quizQuestionDAO.findByCategoryAndQuestionType(QuizQuestion.Category.valueOf(category), QuizQuestion.QuestionType.valueOf(questionType));
         }
         // category!=ALL && questionType!=ALL && difficulty!=ALL
-        else if(!category.equals(Category.ALL) && !questionType.equals(QuizQuestion.QuestionType.ALL) && !difficulty.equals(QuizQuestion.Difficulty.ALL)) {
-            quizQuestions = quizQuestionDAO.findByCategoryAndQuestionTypeAndDifficulty(Category.valueOf(category), QuizQuestion.QuestionType.valueOf(questionType), QuizQuestion.Difficulty.valueOf(difficulty));
+        else if(!category.equals(QuizQuestion.Category.ALL) && !questionType.equals(QuizQuestion.QuestionType.ALL) && !difficulty.equals(QuizQuestion.Difficulty.ALL)) {
+            quizQuestions = quizQuestionDAO.findByCategoryAndQuestionTypeAndDifficulty(QuizQuestion.Category.valueOf(category), QuizQuestion.QuestionType.valueOf(questionType), QuizQuestion.Difficulty.valueOf(difficulty));
         }
         // category==ALL && questionType!=ALL && difficulty==ALL
-        else if(category.equals(Category.ALL) && !questionType.equals(QuizQuestion.QuestionType.ALL) && difficulty.equals(QuizQuestion.Difficulty.ALL)) {
+        else if(category.equals(QuizQuestion.Category.ALL) && !questionType.equals(QuizQuestion.QuestionType.ALL) && difficulty.equals(QuizQuestion.Difficulty.ALL)) {
             quizQuestions = quizQuestionDAO.findByQuestionType(QuizQuestion.QuestionType.valueOf(questionType));
         }
         // category==ALL && questionType!=ALL && difficulty!=ALL
-        else if(category.equals(Category.ALL) && !questionType.equals(QuizQuestion.QuestionType.ALL) && !difficulty.equals(QuizQuestion.Difficulty.ALL)) {
+        else if(category.equals(QuizQuestion.Category.ALL) && !questionType.equals(QuizQuestion.QuestionType.ALL) && !difficulty.equals(QuizQuestion.Difficulty.ALL)) {
             quizQuestions = quizQuestionDAO.findByQuestionTypeAndDifficulty(QuizQuestion.QuestionType.valueOf(questionType), QuizQuestion.Difficulty.valueOf(difficulty));
         }
         // category==ALL && questionType==ALL && difficulty!=ALL
-        else if(category.equals(Category.ALL) && questionType.equals(QuizQuestion.QuestionType.ALL) && !difficulty.equals(QuizQuestion.Difficulty.ALL)) {
+        else if(category.equals(QuizQuestion.Category.ALL) && questionType.equals(QuizQuestion.QuestionType.ALL) && !difficulty.equals(QuizQuestion.Difficulty.ALL)) {
             quizQuestions = quizQuestionDAO.findByDifficulty(QuizQuestion.Difficulty.valueOf(difficulty));
         }
         // category!=ALL && questionType==ALL && difficulty!=ALL
-        else if(!category.equals(Category.ALL) && questionType.equals(QuizQuestion.QuestionType.ALL) && !difficulty.equals(QuizQuestion.Difficulty.ALL)) {
-            quizQuestions = quizQuestionDAO.findByCategoryAndDifficulty(Category.valueOf(category), QuizQuestion.Difficulty.valueOf(difficulty));
+        else if(!category.equals(QuizQuestion.Category.ALL) && questionType.equals(QuizQuestion.QuestionType.ALL) && !difficulty.equals(QuizQuestion.Difficulty.ALL)) {
+            quizQuestions = quizQuestionDAO.findByCategoryAndDifficulty(QuizQuestion.Category.valueOf(category), QuizQuestion.Difficulty.valueOf(difficulty));
         }
         if(quizQuestions != null) {
             numberOfQuestions = countIterable(quizQuestions);
@@ -107,6 +104,8 @@ public class QuizController {
         if(quizQuestions == null || numberOfQuestions < 1) {
             quizQuestions = quizQuestionDAO.findAll();
             numberOfQuestions = countIterable(quizQuestions);
+            //this is dead code
+
         }
         int i = 0;
         HashMap<Integer,QuizQuestion> quizQuestionsHashMap = new HashMap<>();
@@ -114,25 +113,26 @@ public class QuizController {
             quizQuestionsHashMap.put(i,quizQuestion);
             i++;
         }
-        tracker.setNumberOfQuestions(countIterable(quizQuestions));
-        trackerDAO.save(tracker);
-        request.getSession().setAttribute("tracker", tracker);
         //add the tracker number of questions
         request.getSession().setAttribute("quizQuestionsHashMap",quizQuestionsHashMap);
         ArrayList<Integer> usedQuestions = new ArrayList<>();
         request.getSession().setAttribute("usedQuestions",usedQuestions);
+
+        tracker.setTotalQuestions(tracker.getTotalQuestions());
+        trackerDAO.save(tracker);
+        request.getSession().setAttribute("tracker", tracker);
 
         return new RedirectView("nextQuestion");
     }
 
     @RequestMapping(value="nextQuestion")
     public String nextQuestion(ModelMap model, HttpServletRequest request) {
+
         ArrayList<Integer> usedQuestions = (ArrayList<Integer>)request.getSession().getAttribute("usedQuestions");
         HashMap<Integer,QuizQuestion> quizQuestionsHashMap = (HashMap<Integer,QuizQuestion>)request.getSession().getAttribute("quizQuestionsHashMap");
         int numberOfQuestions = quizQuestionsHashMap.size();
         if(usedQuestions.size() >= numberOfQuestions) {
             return "quiz/quizResults";
-            //TODO
         }
         boolean isNewQuestion = false;
         int questionNumber = -1;
@@ -153,8 +153,10 @@ public class QuizController {
     @RequestMapping(value="questionAnswer")
     public String questionAnswer(String multiAnswer, String trueFalseAnswer, ModelMap model, HttpServletRequest request) {
         String email = (String)request.getSession().getAttribute("email");
-        Tracker tracker = trackerDAO.findByEmail(email);
-        //insert String email and tracker object and query by email
+        Tracker tracker = (Tracker) request.getSession().getAttribute("tracker");
+        //insert String email and tracker object
+        tracker.setTotalQuestions(tracker.getTotalQuestions()+1);
+
         HashMap<Integer,QuizQuestion> quizQuestionsHashMap = (HashMap<Integer,QuizQuestion>)request.getSession().getAttribute("quizQuestionsHashMap");
         int questionNumber = (Integer) request.getSession().getAttribute("questionNumber");
         QuizQuestion quizQuestion = quizQuestionsHashMap.get(questionNumber);
@@ -171,14 +173,15 @@ public class QuizController {
                 tracker.setIncorrect(tracker.getIncorrect()+1);
             }
         } else if (quizQuestion.getQuestionType().equals(QuizQuestion.QuestionType.TRUE_FALSE)) {
-            if(trueFalseAnswer != null && quizQuestion.isTrueOrFalse() == Boolean.valueOf(trueFalseAnswer)) {
-                model.addAttribute("correct","GREAT JOB!");
-                tracker.setCorrect(tracker.getCorrect()+1);
+            if (trueFalseAnswer != null && quizQuestion.isTrueOrFalse() == Boolean.valueOf(trueFalseAnswer)) {
+                model.addAttribute("correct", "GREAT JOB!");
+                tracker.setCorrect(tracker.getCorrect() + 1);
             } else {
-                model.addAttribute("incorrect","SORRY Wrong Answer");
-                tracker.setIncorrect(tracker.getIncorrect()+1);
+                model.addAttribute("incorrect", "SORRY Wrong Answer");
+                tracker.setIncorrect(tracker.getIncorrect() + 1);
+                //lets add our counters above
             }
-            //lets add our counters above
+
         }
         //save and log the session
         trackerDAO.save(tracker);

@@ -3,6 +3,8 @@ package quizEngine.entities;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by Ari on 8/17/16.
@@ -10,10 +12,11 @@ import javax.validation.constraints.Null;
 // created Tracker Entity to be called from QuizController
 
 @Entity
-@Table(name = "track")
+@Table(name = "trackStat")
 public class Tracker {
     private int correct;
     private int incorrect;
+    private int totalQuestions =0;
 
     // An auto-generated id (unique for each user in the db)
     @Id
@@ -26,17 +29,12 @@ public class Tracker {
     @NotNull
     private String name;
 
-    @NotNull
-    private int numberOfQuestions=0;
-
-
-
-    public int getNumberOfQuestions() {
-        return numberOfQuestions;
+    public int getTotalQuestions() {
+        return totalQuestions;
     }
 
-    public void setNumberOfQuestions(int numberOfQuestions) {
-        this.numberOfQuestions = numberOfQuestions;
+    public void setTotalQuestions(int totalQuestions) {
+        this.totalQuestions = totalQuestions;
     }
 
     public int getCorrect() {
