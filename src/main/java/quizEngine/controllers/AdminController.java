@@ -58,8 +58,8 @@ public class AdminController {
     }
     @RequestMapping(value="deleteQuestion")
     public View deleteQuestion(long id) {
-        QuizQuestion quizQuestion = quizQuestionDAO.findOne(id);
-        quizQuestionDAO.delete(quizQuestion);
+        QuizQuestion quizQuestion = quizQuestionDAO.findOne( id);
+        quizQuestionDAO.delete( quizQuestion);
         return new RedirectView("/admin/");
     }
     @RequestMapping(value = "deleteAllQuestions")

@@ -32,11 +32,6 @@ public class QuizController {
         this.quizQuestionDAO = quizQuestionDAO;
         this.trackerDAO = trackerDAO;
     }
-    //added mapping for quizResults direct link
-    @RequestMapping(value="quizResults")
-    public String quizResults (ModelMap model) {
-        return "quiz/quizResults";
-    }
 
     @RequestMapping(value="/")
     public String dashboard(ModelMap model) {
@@ -48,6 +43,22 @@ public class QuizController {
         //this is your mapper the add attribute allows these definitions to be called and linked
         //paired keys and values
         return "quiz/index";
+    }
+    //added mapping for quizResults direct link
+    @RequestMapping(value="quizResults")
+    public String quizResults (ModelMap model) {
+        return "quiz/quizResults";
+    }
+
+    @RequestMapping(value ="results")
+    public View quizResult(ModelMap model) {
+        Tracker tracker = new Tracker();
+        model.addAttribute("correct", tracker.getCorrect());
+        model.addAttribute("incorrect", tracker.getIncorrect());
+        model.addAttribute("totalQuestions", tracker.getTotalQuestions());
+        model.addAttribute("name", tracker.getName());
+        model.addAttribute("email", tracker.getEmail());
+        return new RedirectView("quiz/dashboard");
     }
 
     @RequestMapping(value="startQuiz")

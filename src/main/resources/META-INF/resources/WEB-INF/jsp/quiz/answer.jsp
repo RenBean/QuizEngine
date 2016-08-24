@@ -3,6 +3,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
+    <link rel="shortcut icon" href="http://b.dryicons.com/images/icon_sets/architecture_blueprint_icons_set/png/512x512/question_mark.png" type="image/x-icon">
     <title>QUIZ ANSWER</title>
     <link type="text/css" rel="stylesheet" href="/css/style.css">
     <%--<c:if test="${quizQuestion.questionType == 'CODE'}">--%>
@@ -14,16 +15,16 @@
 <body>
 <br>
 <h1>QUIZ ANSWER</h1>
-<c:if test="${not empty correct}">
-    <div style="color:#00ff33;font-weight: bold;">
-        <c:out value="${correct}" />
-    </div>
-</c:if>
-<c:if test="${not empty incorrect}">
-    <div style="color:red;font-weight: bold;">
-        <c:out value="${incorrect}" />
-    </div>
-</c:if>
+<%--<c:if test="${not empty tracker.correct}">--%>
+    <%--<div style="color:#00ff33;font-weight: bold;">--%>
+        <%--<c:out value="${tracker.correct}" />--%>
+    <%--</div>--%>
+<%--</c:if>--%>
+<%--<c:if test="${not empty tracker.incorrect}">--%>
+    <%--<div style="color:red;font-weight: bold;">--%>
+        <%--<c:out value="${tracker.incorrect}" />--%>
+    <%--</div>--%>
+<%--</c:if>--%>
 <br>
 <c:if test="${not empty tracker}">
     You have <c:out value="${tracker.correct}" /> correct <br><c:out value="${tracker.incorrect}" /> incorrect.

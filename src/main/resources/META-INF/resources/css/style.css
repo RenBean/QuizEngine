@@ -1,15 +1,23 @@
 body{
-    background-color: aliceblue;
-    margin:auto; box-shadow: black;
-    text-align: center;}
+    background-image: url("http://tr1.cbsistatic.com/hub/i/2014/04/16/0467843f-63cc-4899-ae2c-8b347ba598b0/binary-digital.jpg");
+    background-size: 900px;
+    background-repeat: no-repeat;
+    background-color: #000006; opacity: 0.8;
+    background-position: top,center;
+    margin:auto; box-shadow: #000006;
+    text-align: center;
+    color:#00ff33}
 a{
     font-size: 10px;
-    color:dimgrey;
+    color:#00ff66;
+}
+a:hover{    font-size: 10px;
+    color: #00ff33;
 
 }
 div{
     background-size: contain ;
-    background-color:#282a36;
+    background-color:#000006;
     max-height: 30em;
     padding-bottom: 3px;
     padding-top: 3px;
