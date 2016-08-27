@@ -16,9 +16,35 @@
 
 QUESTION: <c:out value="${quizQuestion.question}" />
 <br><br><br>
+
 <%--<output type="text" name="Iterable" value="?">:<c:out value="${quizQuestion.Iterable}" /></output>--%>
 <form name="questionForm" method="POST" action="/quiz/questionAnswer">
 <c:if test="${quizQuestion.questionType == 'MULTIPLE_CHOICE'}">
+
+    <input type="radio" name="multiAnswer" value="yes"> :<c:out value="${quizQuestion.correctMultipleChoiceAnswer}" /><br>
+    <input type="radio" name="multiAnswer" value="no"> :<c:out value="${quizQuestion.wrongMultipleChoiceAnswer1}" /><br>
+    <input type="radio" name="multiAnswer" value="no"> :<c:out value="${quizQuestion.wrongMultipleChoiceAnswer2}" /><br>
+    <input type="radio" name="multiAnswer" value="no"> :<c:out value="${quizQuestion.wrongMultipleChoiceAnswer3}" /><br>
+</c:if>
+    <c:if test="${quizQuestion.questionType == 'CODE'}">
+    <textarea rows='4' cols='50' placeholder='Input text here...'></textarea>
+    <br>
+    <c:choose>
+    <c:when test="${quizQuestion.category == 'SQL'}">SQL Category:
+    <pre><code class="sql">
+            </c:when>
+            <c:when test="${quizQuestion.category == 'HTML'}">HTML Category:
+                <pre><code class="html">
+            </c:when>
+            <c:when test="${quizQuestion.category == 'CSS'}">CSS Category:
+                <pre><code class="css">
+            </c:when>
+            <c:otherwise>
+                <pre><code class="java">Java Category:
+            </c:otherwise>
+                    </c:choose>
+        </code></pre>
+    </c:if>
 
     <%--<% Map<Integer, String> randomizeQuestion = new HashMap<>();--%>
         <%--randomizeQuestion.put(0,"Zero");--%>
@@ -47,11 +73,7 @@ QUESTION: <c:out value="${quizQuestion.question}" />
     <%--</c:forEach>--%>
 
 
-    <input type="radio" name="multiAnswer" value="yes"> :<c:out value="${quizQuestion.correctMultipleChoiceAnswer}" /><br>
-    <input type="radio" name="multiAnswer" value="no"> :<c:out value="${quizQuestion.wrongMultipleChoiceAnswer1}" /><br>
-    <input type="radio" name="multiAnswer" value="no"> :<c:out value="${quizQuestion.wrongMultipleChoiceAnswer2}" /><br>
-    <input type="radio" name="multiAnswer" value="no"> :<c:out value="${quizQuestion.wrongMultipleChoiceAnswer3}" /><br>
-</c:if>
+
 <c:if test="${quizQuestion.questionType == 'TRUE_FALSE'}">
     True: <input type="radio" name="trueFalseAnswer" value="true"><br>
     False: <input type="radio" name="trueFalseAnswer" value="false">

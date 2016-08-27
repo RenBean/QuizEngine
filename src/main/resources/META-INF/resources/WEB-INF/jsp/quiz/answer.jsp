@@ -6,25 +6,21 @@
     <link rel="shortcut icon" href="http://b.dryicons.com/images/icon_sets/architecture_blueprint_icons_set/png/512x512/question_mark.png" type="image/x-icon">
     <title>QUIZ ANSWER</title>
     <link type="text/css" rel="stylesheet" href="/css/style.css">
-    <%--<c:if test="${quizQuestion.questionType == 'CODE'}">--%>
-        <%--<link rel="stylesheet" href="https://highlightjs.org/static/demo/styles/dracula.css">--%>
-        <%--<script src="https://highlightjs.org/static/highlight.pack.js"></script>--%>
-        <%--<script>hljs.initHighlightingOnLoad();</script>--%>
-    <%--</c:if>--%>
+
 </head>
 <body>
 <br>
 <h1>QUIZ ANSWER</h1>
-<%--<c:if test="${not empty tracker.correct}">--%>
-    <%--<div style="color:#00ff33;font-weight: bold;">--%>
-        <%--<c:out value="${tracker.correct}" />--%>
-    <%--</div>--%>
-<%--</c:if>--%>
-<%--<c:if test="${not empty tracker.incorrect}">--%>
-    <%--<div style="color:red;font-weight: bold;">--%>
-        <%--<c:out value="${tracker.incorrect}" />--%>
-    <%--</div>--%>
-<%--</c:if>--%>
+<c:if test="${not empty correct}">
+    <div style="color:#00ff33;font-weight: bold;">
+        <c:out value="${correct}" />
+    </div>
+</c:if>
+<c:if test="${not empty incorrect}">
+    <div style="color:red;font-weight: bold;">
+        <c:out value="${incorrect}" />
+    </div>
+</c:if>
 <br>
 <c:if test="${not empty tracker}">
     You have <c:out value="${tracker.correct}" /> correct <br><c:out value="${tracker.incorrect}" /> incorrect.
@@ -40,18 +36,18 @@ ANSWER:
 </c:if>
 <c:if test="${quizQuestion.questionType == 'CODE'}">
 <br>
-<c:choose>
-<c:when test="${quizQuestion.category == 'SQL'}">
-<pre><code class="sql">
+    <c:choose>
+            <c:when test="${quizQuestion.category == 'SQL'}">SQL Category:
+            <pre><code class="sql">
             </c:when>
-            <c:when test="${quizQuestion.category == 'HTML'}">
+            <c:when test="${quizQuestion.category == 'HTML'}">HTML Category:
                 <pre><code class="html">
             </c:when>
-            <c:when test="${quizQuestion.category == 'CSS'}">
+            <c:when test="${quizQuestion.category == 'CSS'}">CSS Category:
                 <pre><code class="css">
             </c:when>
             <c:otherwise>
-                <pre><code class="java">
+                <pre><code class="java">Java Category:
             </c:otherwise>
         </c:choose>
                 <div style="color:#00ff33;font-weight: bold;">
@@ -64,6 +60,7 @@ ANSWER:
         </code></pre>
     </c:if>
 <br>
+
 <form action="/quiz/nextQuestion" method="POST">
     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
     <br><input type="submit" value="Next Question" /><br>  <a href="/">Home</a><br>
