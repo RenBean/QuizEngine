@@ -11,31 +11,25 @@
 <h1>View All Questions</h1>
 <br><br>
 <table>
+    <thead>
     <tr>
-        <th> Question Id </th>
-        <th> | </th>
+        <th> Id </th>
         <th> Question Category </th>
-        <th> | </th>
         <th> Question Type </th>
-        <th> | </th>
         <th> Question Difficulty </th>
-        <th> | </th>
         <th> Question </th>
-        <th> | </th>
         <th> Answer </th>
+        <th> Delete </th>
     </tr>
+    </thead>
+    <tbody>
     <c:forEach var="quizQuestion" items="${quizQuestions}">
         <tr>
             <td><a href="/admin/viewQuestion?id=${quizQuestion.id}"><c:out value="${quizQuestion.id}" /></a></td>
-            <th> | </th>
             <td><c:out value="${quizQuestion.category}" /></td>
-            <th> | </th>
             <td><c:out value="${quizQuestion.questionType}" /></td>
-            <th> | </th>
             <td><c:out value="${quizQuestion.difficulty}" /></td>
-            <th> | </th>
             <td><c:out value="${quizQuestion.question}" /></td>
-            <th> | </th>
             <td>
                 <c:if test="${quizQuestion.questionType == 'MULTIPLE_CHOICE'}">
                     <c:out value="${quizQuestion.correctMultipleChoiceAnswer}" />
@@ -54,6 +48,7 @@
             <td><a href="/admin/deleteQuestion?id=${quizQuestion.id}">DELETE<c:out value="${quizQuestion.id}" /></a></td>
         </tr>
     </c:forEach>
+    </tbody>
 </table>
 ||
 <a href="/restData/getAllQuestions">Bulk Download Questions</a>

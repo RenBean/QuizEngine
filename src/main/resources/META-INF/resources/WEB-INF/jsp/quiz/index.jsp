@@ -27,16 +27,17 @@
                 <option value="<c:out value="${quizType}"/>"><c:out value="${quizType}"/></option>
             </c:forEach>
         </select><br><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-wheelchair-alt" aria-hidden="true"></i> Difficulty <select name="difficulty">
+    <c:forEach var="difficulty" items="${difficulties}">
+        <option value="<c:out value="${difficulty}"/>"><c:out value="${difficulty}"/></option>
+    </c:forEach>
+</select><br><br>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-question-circle-o" aria-hidden="true"></i> Type <select name="questionType">
             <c:forEach var="questionType" items="${questionTypes}">
                 <option value="<c:out value="${questionType}"/>"><c:out value="${questionType}"/></option>
             </c:forEach>
         </select><br><br>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-wheelchair-alt" aria-hidden="true"></i> Difficulty <select name="difficulty">
-            <c:forEach var="difficulty" items="${difficulties}">
-                <option value="<c:out value="${difficulty}"/>"><c:out value="${difficulty}"/></option>
-            </c:forEach>
-        </select><br><br>
+
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
         <input type="submit" value="Let the Quiz Begin">
     </form>

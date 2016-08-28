@@ -1,17 +1,31 @@
-body{
-    background-image: url("http://tr1.cbsistatic.com/hub/i/2014/04/16/0467843f-63cc-4899-ae2c-8b347ba598b0/binary-digital.jpg");
-    background-size: 900px;
+body {
+    background-image: url("http://wallrider.top/wallpaper_high_contrast/digital_world_cool_technology_hogh_contrast_hd-wallpaper-1300742.jpg");
+    background-attachment: fixed;
+    background-position: center;
+    background-size: contain;
     background-repeat: no-repeat;
-    background-color: #000006; opacity: 0.8;
-    background-position: top,center;
-    margin:auto; box-shadow: #000006;
+    background-color: #000006;
+    opacity: 0.8;
+
+    font-weight: bold;
+    text-decoration: ThreeDDarkShadow;
     text-align: center;
-    color:#00ff33}
+    color: #00ff33;
+
+    margin: auto;
+    box-shadow: #000006;
+}
+
 a{
-    font-size: 10px;
+    font-size: 12px;
+    font-weight: bold;
+    text-decoration: ThreeDLightShadow;
     color:#00ff66;
 }
-a:hover{    font-size: 10px;
+a:hover{
+    font-size: 12px;
+    font-weight: bold;
+    text-decoration: ThreeDLightShadow;
     color: #00ff33;
 
 }
